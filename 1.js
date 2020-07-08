@@ -17,27 +17,15 @@
 
 // Решение
 
-let postpone = function(start, end, delay){
-    if(typeof start !== "number" || typeof end !== 'number' || typeof delay !== 'number' || delay < 0){
-        throw new Error('All parameters and delay must be numbers and more then zero');
-    }
-
-    if (!this.downMaxDelay){
-        this.downMaxDelay= 0;
-    }
-
-    if (!this.upMaxDelay){
-        this.upMaxDelay= 0;
-    }
-
-    if (start < end){
-            for (let i = start; i <= end; i++) {
-                let calcDelay  = (i - start ) * delay;
-                this.upMaxDelay = calcDelay;
-                 setTimeout(function() {
-                    console.log(i);
-                }, calcDelay + this.downMaxDelay);
-            }
+let extLogic = function(start, end, delay){
+    if (start < end) {
+        for (let i = start; i <= end; i++) {
+            let calcDelay  = (i - start ) * delay;
+            this.upMaxDelay = calcDelay;
+            setTimeout(function() {
+                console.log(i);
+            }, calcDelay + this.downMaxDelay);
+        }
 
         this.upMaxDelay += this.downMaxDelay;
     }
@@ -51,7 +39,22 @@ let postpone = function(start, end, delay){
         }
         this.downMaxDelay += this.upMaxDelay;
     }
+}
 
+let postpone = function(start, end, delay){
+    if(typeof start !== "number" || typeof end !== 'number' || typeof delay !== 'number' || delay < 0){
+        throw new Error('All parameters and delay must be numbers and more then zero');
+    }
+
+    if (!this.downMaxDelay){
+        this.downMaxDelay= 0;
+    }
+
+    if (!this.upMaxDelay){
+        this.upMaxDelay= 0;
+    }
+
+    extLogic.apply(this, arguments);
 }
 
 postpone(1, 3, 1000);
