@@ -18,27 +18,26 @@
 // Решение
 
 let extLogic = function(start, end, delay){
+    let max  = 0;
     if (start < end) {
         for (let i = start; i <= end; i++) {
             let calcDelay  = (i - start ) * delay;
-            this.upMaxDelay = calcDelay;
+            max = calcDelay;
             setTimeout(function() {
                 console.log(i);
-            }, calcDelay + this.downMaxDelay);
+            }, calcDelay + this.lastDelay);
         }
-
-        this.upMaxDelay += this.downMaxDelay;
     }
     else{
         for (let i = start; i >= end; i--) {
             let calcDelay  = (start - i ) * delay;
-            this.downMaxDelay = (calcDelay > this.downMaxDelay) ? calcDelay : this.downMaxDelay;
+            max = (calcDelay > max) ? calcDelay : max;
             setTimeout(function() {
                 console.log(i);
-            }, calcDelay + this.upMaxDelay);
+            }, calcDelay + this.lastDelay);
         }
-        this.downMaxDelay += this.upMaxDelay;
     }
+    this.lastDelay +=  max;
 }
 
 let postpone = function(start, end, delay){
@@ -46,12 +45,8 @@ let postpone = function(start, end, delay){
         throw new Error('All parameters and delay must be numbers and more then zero');
     }
 
-    if (!this.downMaxDelay){
-        this.downMaxDelay= 0;
-    }
-
-    if (!this.upMaxDelay){
-        this.upMaxDelay= 0;
+    if (!this.lastDelay){
+        this.lastDelay= 0;
     }
 
     extLogic.apply(this, arguments);
@@ -65,5 +60,6 @@ postpone(3, 1, 1000);
 // 3
 // 2
 // 1
-
+postpone(7, 5, 1000);
+postpone(17, 19, 1000);
 exports.postpone = postpone;
