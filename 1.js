@@ -17,31 +17,39 @@
 
 // Решение
 
-let upMaxDelay = 0;
-let downMaxDelay = 0;
-
 let postpone = function(start, end, delay){
     if(typeof start !== "number" || typeof end !== 'number' || typeof delay !== 'number' || delay < 0){
         throw new Error('All parameters and delay must be numbers and more then zero');
     }
 
+    if (!this.downMaxDelay){
+        this.downMaxDelay= 0;
+    }
+
+    if (!this.upMaxDelay){
+        this.upMaxDelay= 0;
+    }
+
     if (start < end){
             for (let i = start; i <= end; i++) {
                 let calcDelay  = (i - start ) * delay;
-                upMaxDelay = calcDelay;
+                this.upMaxDelay = calcDelay;
                  setTimeout(function() {
                     console.log(i);
-                }, calcDelay + downMaxDelay);
+                }, calcDelay + this.downMaxDelay);
             }
+
+        this.upMaxDelay += this.downMaxDelay;
     }
     else{
         for (let i = start; i >= end; i--) {
             let calcDelay  = (start - i ) * delay;
-            downMaxDelay = (calcDelay > downMaxDelay) ? calcDelay : downMaxDelay;
+            this.downMaxDelay = (calcDelay > this.downMaxDelay) ? calcDelay : this.downMaxDelay;
             setTimeout(function() {
                 console.log(i);
-            }, calcDelay + upMaxDelay);
+            }, calcDelay + this.upMaxDelay);
         }
+        this.downMaxDelay += this.upMaxDelay;
     }
 
 }
