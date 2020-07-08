@@ -60,6 +60,4 @@ postpone(3, 1, 1000);
 // 3
 // 2
 // 1
-postpone(7, 5, 1000);
-postpone(17, 19, 1000);
 exports.postpone = postpone;
